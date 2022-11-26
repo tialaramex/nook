@@ -106,3 +106,39 @@ make_balanced! { BalancedI8(i8) 0x7F, 0x81 }
 make_balanced! { BalancedI16(i16) 0x7FFF, 0x8001 }
 make_balanced! { BalancedI32(i32) 0x7FFFFFFF, 0x80000001 }
 make_balanced! { BalancedI64(i64) 0x7FFFFFFFFFFFFFFF, 0x8000000000000001 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn zero_abs() {
+        let p = BalancedI32::new(0).unwrap();
+        assert_eq!(p, p.abs());
+    }
+
+    #[test]
+    fn format_hex() {
+        let s = format!("{0} {0:x} {0:X} {0:x?} {0:X?}", BalancedI8::MAX);
+        assert_eq!(s, "127 7f 7F 7f 7F");
+    }
+
+    #[test]
+    fn format_bases() {
+        let s = format!("{0} {0:o} {0:b}", BalancedI8::MAX);
+        assert_eq!(s, "127 177 1111111");
+    }
+
+    #[test]
+    fn format_fill() {
+        let s = format!("{0:_<8} {0:\"^1$} {0:_>8}", BalancedI8::new(0).unwrap(), 5);
+        assert_eq!(s, r#"0_______ ""0"" _______0"#);
+    }
+
+    #[test]
+    fn format_neg() {
+        let s = format!("{0} {0:X?} {0:o}", BalancedI8::MIN);
+        // Yup, hexadecimal and octal formats are defined as-if this was an unsigned type
+        assert_eq!(s, "-127 81 201");
+    }
+}
