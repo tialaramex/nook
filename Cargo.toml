@@ -2,5 +2,10 @@
 name = "nook"
 version = "0.1.0"
 edition = "2021"
+authors = ["Nick Lamb <git@tree.tlrmx.org>"]
+description = "Useful types with niches"
+license = "LGPL-2.0"
+repository = "https://github.com/tialaramex/nook/"
+keywords = ["niche"]
 
 [dependencies]
